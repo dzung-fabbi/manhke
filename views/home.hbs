@@ -90,6 +90,7 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            position: relative;
         }
         
         .logo {
@@ -447,10 +448,30 @@
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
+                flex-wrap: nowrap;
+            }
+            
+            .logo {
+                flex: 1;
+                min-width: 0;
+            }
+            
+            .logo-text {
+                font-size: 0.9rem;
+            }
+            
+            .logo-main {
+                font-size: 1.1rem;
+            }
+            
+            .logo-sub {
+                font-size: 0.75rem;
             }
             
             .hamburger {
                 display: flex;
+                flex-shrink: 0;
+                margin-left: 1rem;
             }
             
             nav {
