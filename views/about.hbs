@@ -136,6 +136,36 @@
             border-bottom: 2px solid white;
         }
         
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            gap: 5px;
+            background: none;
+            border: none;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        
         main {
             min-height: calc(100vh - 200px);
             padding: 2rem 0;
@@ -286,14 +316,84 @@
         }
         
         @media (max-width: 768px) {
+            header {
+                position: relative;
+            }
+            
             header .container {
-                flex-direction: column;
-                text-align: center;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: nowrap;
+            }
+            
+            .logo {
+                flex: 1;
+                min-width: 0;
+            }
+            
+            .logo-text {
+                font-size: 0.9rem;
+            }
+            
+            .logo-main {
+                font-size: 1.1rem;
+            }
+            
+            .logo-sub {
+                font-size: 0.75rem;
+            }
+            
+            .hamburger {
+                display: flex;
+                flex-shrink: 0;
+                margin-left: 1rem;
+                z-index: 10;
+            }
+            
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                width: 100%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                z-index: 9;
+                margin-top: 0;
+            }
+            
+            nav.active {
+                display: block;
             }
             
             nav ul {
-                justify-content: center;
-                margin-top: 1rem;
+                flex-direction: column;
+                gap: 0;
+                width: 100%;
+                justify-content: flex-start;
+                margin-top: 0;
+            }
+            
+            nav ul li {
+                width: 100%;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            nav ul li:last-child {
+                border-bottom: none;
+            }
+            
+            nav a {
+                display: block;
+                padding: 1rem;
+                text-align: left;
+            }
+            
+            nav a.active {
+                border-bottom: none;
+                background: rgba(255, 255, 255, 0.1);
             }
             
             .fab-container {
@@ -304,6 +404,46 @@
             .fab {
                 width: 55px;
                 height: 55px;
+            }
+            
+            footer {
+                padding: 2rem 0 1rem;
+            }
+            
+            footer .container {
+                grid-template-columns: 1fr;
+                gap: 0;
+                text-align: center;
+            }
+            
+            footer h3 {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+                color: #667eea;
+                border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+                padding-bottom: 0.5rem;
+            }
+            
+            footer > .container > div {
+                padding: 1rem 0;
+            }
+            
+            footer p {
+                font-size: 0.95rem;
+                line-height: 1.6;
+                margin-bottom: 0.8rem;
+            }
+            
+            footer a {
+                font-size: 0.95rem;
+                padding: 0.3rem 0;
+                display: inline-block;
+                transition: all 0.3s ease;
+            }
+            
+            footer a:hover {
+                color: #667eea;
+                transform: translateX(5px);
             }
         }
     </style>
@@ -318,7 +458,12 @@
                     <span class="logo-sub">Thiết bị điện tử</span>
                 </div>
             </div>
-            <nav>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav id="nav">
                 <ul>
                     <li><a href="/trang-chu">Trang chủ</a></li>
                     <li><a href="/gioi-thieu" class="active">Giới thiệu</a></li>
@@ -436,5 +581,38 @@
             </svg>
         </a>
     </div>
+    
+    <script>
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+        
+        if (hamburger && nav) {
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                nav.classList.toggle('active');
+            });
+            
+            // Close menu when clicking on a link
+            const navLinks = nav.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    nav.classList.remove('active');
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideNav = nav.contains(event.target);
+                const isClickOnHamburger = hamburger.contains(event.target);
+                
+                if (!isClickInsideNav && !isClickOnHamburger && nav.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    nav.classList.remove('active');
+                }
+            });
+        }
+    </script>
 </body>
 </html>

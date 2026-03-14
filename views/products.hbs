@@ -136,6 +136,36 @@
             border-bottom: 2px solid white;
         }
         
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            gap: 5px;
+            background: none;
+            border: none;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        
         main {
             min-height: calc(100vh - 200px);
             padding: 2rem 0;
@@ -220,15 +250,26 @@
         
         .product-card {
             background: white;
-            padding: 1.5rem;
+            padding: 0;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
         }
         
         .product-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #667eea;
+            background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         
         .product-card h3 {
@@ -342,14 +383,84 @@
         .product-card:nth-child(4) { animation-delay: 0.4s; }
         
         @media (max-width: 768px) {
+            header {
+                position: relative;
+            }
+            
             header .container {
-                flex-direction: column;
-                text-align: center;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: nowrap;
+            }
+            
+            .logo {
+                flex: 1;
+                min-width: 0;
+            }
+            
+            .logo-text {
+                font-size: 0.9rem;
+            }
+            
+            .logo-main {
+                font-size: 1.1rem;
+            }
+            
+            .logo-sub {
+                font-size: 0.75rem;
+            }
+            
+            .hamburger {
+                display: flex;
+                flex-shrink: 0;
+                margin-left: 1rem;
+                z-index: 10;
+            }
+            
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                width: 100%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                z-index: 9;
+                margin-top: 0;
+            }
+            
+            nav.active {
+                display: block;
             }
             
             nav ul {
-                justify-content: center;
-                margin-top: 1rem;
+                flex-direction: column;
+                gap: 0;
+                width: 100%;
+                justify-content: flex-start;
+                margin-top: 0;
+            }
+            
+            nav ul li {
+                width: 100%;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            nav ul li:last-child {
+                border-bottom: none;
+            }
+            
+            nav a {
+                display: block;
+                padding: 1rem;
+                text-align: left;
+            }
+            
+            nav a.active {
+                border-bottom: none;
+                background: rgba(255, 255, 255, 0.1);
             }
             
             .fab-container {
@@ -360,6 +471,46 @@
             .fab {
                 width: 55px;
                 height: 55px;
+            }
+            
+            footer {
+                padding: 2rem 0 1rem;
+            }
+            
+            footer .container {
+                grid-template-columns: 1fr;
+                gap: 0;
+                text-align: center;
+            }
+            
+            footer h3 {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+                color: #667eea;
+                border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+                padding-bottom: 0.5rem;
+            }
+            
+            footer > .container > div {
+                padding: 1rem 0;
+            }
+            
+            footer p {
+                font-size: 0.95rem;
+                line-height: 1.6;
+                margin-bottom: 0.8rem;
+            }
+            
+            footer a {
+                font-size: 0.95rem;
+                padding: 0.3rem 0;
+                display: inline-block;
+                transition: all 0.3s ease;
+            }
+            
+            footer a:hover {
+                color: #667eea;
+                transform: translateX(5px);
             }
         }
     </style>
@@ -374,7 +525,12 @@
                     <span class="logo-sub">Thiết bị điện tử</span>
                 </div>
             </div>
-            <nav>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav id="nav">
                 <ul>
                     <li><a href="/trang-chu">Trang chủ</a></li>
                     <li><a href="/gioi-thieu">Giới thiệu</a></li>
@@ -396,59 +552,40 @@
 
             <div class="products-grid">
                 <div class="product-card">
-                    <svg width="100%" height="200" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin-bottom: 1rem;">
-                        <g transform="translate(50%, 50%) translate(-40, -50)">
-                            <rect x="10" y="5" width="60" height="110" rx="8" fill="white" opacity="0.9"/>
-                            <rect x="15" y="15" width="50" height="70" rx="4" fill="#667eea"/>
-                            <circle cx="40" cy="95" r="4" fill="white" opacity="0.9"/>
-                        </g>
-                    </svg>
-                    <h3>Điện Thoại Thông Minh</h3>
-                    <p class="category">Điện thoại</p>
-                    <p>Đa dạng các dòng điện thoại thông minh từ các thương hiệu uy tín</p>
-                    <a href="/lien-he" class="btn" style="margin-top: 1rem; display: inline-block;">Liên hệ</a>
+                    <div class="product-image" style="background-image: url('/images/service-1.webp');" onerror="this.style.backgroundImage='linear-gradient(135deg, #667eea 0%, #764ba2 100%)';"></div>
+                    <div style="padding: 1.5rem;">
+                        <h3>Điện Thoại Thông Minh</h3>
+                        <p class="category">Điện thoại</p>
+                        <p>Đa dạng các dòng điện thoại thông minh từ các thương hiệu uy tín</p>
+                        <a href="/lien-he" class="btn" style="margin-top: 1rem; display: inline-block;">Liên hệ</a>
+                    </div>
                 </div>
                 <div class="product-card">
-                    <svg width="100%" height="200" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin-bottom: 1rem;">
-                        <g transform="translate(50%, 50%) translate(-50, -35)">
-                            <rect x="10" y="5" width="80" height="50" rx="4" fill="white" opacity="0.9"/>
-                            <rect x="15" y="10" width="70" height="35" rx="2" fill="#667eea"/>
-                            <rect x="20" y="60" width="60" height="5" rx="2" fill="white" opacity="0.9"/>
-                            <circle cx="50" cy="67" r="2" fill="white" opacity="0.9"/>
-                        </g>
-                    </svg>
-                    <h3>Laptop & Máy Tính</h3>
-                    <p class="category">Máy tính</p>
-                    <p>Laptop, máy tính để bàn phù hợp cho công việc và giải trí</p>
-                    <a href="/lien-he" class="btn" style="margin-top: 1rem; display: inline-block;">Liên hệ</a>
+                    <div class="product-image" style="background-image: url('/images/service-2.webp');" onerror="this.style.backgroundImage='linear-gradient(135deg, #667eea 0%, #764ba2 100%)';"></div>
+                    <div style="padding: 1.5rem;">
+                        <h3>Laptop & Máy Tính</h3>
+                        <p class="category">Máy tính</p>
+                        <p>Laptop, máy tính để bàn phù hợp cho công việc và giải trí</p>
+                        <a href="/lien-he" class="btn" style="margin-top: 1rem; display: inline-block;">Liên hệ</a>
+                    </div>
                 </div>
                 <div class="product-card">
-                    <svg width="100%" height="200" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin-bottom: 1rem;">
-                        <g transform="translate(50%, 50%) translate(-45, -40)">
-                            <rect x="10" y="5" width="70" height="90" rx="6" fill="white" opacity="0.9"/>
-                            <rect x="15" y="12" width="60" height="70" rx="3" fill="#667eea"/>
-                            <circle cx="45" cy="90" r="3" fill="white" opacity="0.9"/>
-                        </g>
-                    </svg>
-                    <h3>Máy Tính Bảng</h3>
-                    <p class="category">Tablet</p>
-                    <p>Tablet đa dạng kích thước và tính năng</p>
-                    <a href="/lien-he" class="btn" style="margin-top: 1rem; display: inline-block;">Liên hệ</a>
+                    <div class="product-image" style="background-image: url('/images/service-3.webp');" onerror="this.style.backgroundImage='linear-gradient(135deg, #667eea 0%, #764ba2 100%)';"></div>
+                    <div style="padding: 1.5rem;">
+                        <h3>Máy Tính Bảng</h3>
+                        <p class="category">Tablet</p>
+                        <p>Tablet đa dạng kích thước và tính năng</p>
+                        <a href="/lien-he" class="btn" style="margin-top: 1rem; display: inline-block;">Liên hệ</a>
+                    </div>
                 </div>
                 <div class="product-card">
-                    <svg width="100%" height="200" xmlns="http://www.w3.org/2000/svg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin-bottom: 1rem;">
-                        <g transform="translate(50%, 50%) translate(-40, -40)">
-                            <circle cx="30" cy="30" r="25" fill="white" opacity="0.9"/>
-                            <circle cx="30" cy="30" r="18" fill="#667eea"/>
-                            <circle cx="30" cy="30" r="10" fill="white" opacity="0.9"/>
-                            <rect x="60" y="20" width="20" height="40" rx="3" fill="white" opacity="0.9"/>
-                            <rect x="63" y="25" width="14" height="30" rx="2" fill="#667eea"/>
-                        </g>
-                    </svg>
-                    <h3>Phụ Kiện Điện Tử</h3>
-                    <p class="category">Phụ kiện</p>
-                    <p>Tai nghe, sạc pin, ốp lưng và nhiều phụ kiện khác</p>
-                    <a href="/lien-he" class="btn" style="margin-top: 1rem; display: inline-block;">Liên hệ</a>
+                    <div class="product-image" style="background-image: url('/images/service-1.webp');" onerror="this.style.backgroundImage='linear-gradient(135deg, #667eea 0%, #764ba2 100%)';"></div>
+                    <div style="padding: 1.5rem;">
+                        <h3>Phụ Kiện Điện Tử</h3>
+                        <p class="category">Phụ kiện</p>
+                        <p>Tai nghe, sạc pin, ốp lưng và nhiều phụ kiện khác</p>
+                        <a href="/lien-he" class="btn" style="margin-top: 1rem; display: inline-block;">Liên hệ</a>
+                    </div>
                 </div>
             </div>
 
@@ -503,5 +640,38 @@
             </svg>
         </a>
     </div>
+    
+    <script>
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+        
+        if (hamburger && nav) {
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                nav.classList.toggle('active');
+            });
+            
+            // Close menu when clicking on a link
+            const navLinks = nav.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    nav.classList.remove('active');
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideNav = nav.contains(event.target);
+                const isClickOnHamburger = hamburger.contains(event.target);
+                
+                if (!isClickInsideNav && !isClickOnHamburger && nav.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    nav.classList.remove('active');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
