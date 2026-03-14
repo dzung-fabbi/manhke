@@ -7,8 +7,13 @@ export interface MetaTags {
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
+  ogImageWidth?: string;
+  ogImageHeight?: string;
+  ogImageAlt?: string;
+  ogImageType?: string;
   ogUrl?: string;
   canonical?: string;
+  fbAppId?: string;
 }
 
 export interface StructuredData {
@@ -47,6 +52,10 @@ export class SeoService {
         ogTitle: 'Điện máy Thế - Điện Thoại, Máy Tính, Thiết Bị Điện Tử',
         ogDescription: 'Điện máy Thế chuyên cung cấp các sản phẩm điện tử chất lượng cao tại Diễn Châu, Nghệ An',
         ogImage: `${baseUrl}/images/og-image.jpg`,
+        ogImageWidth: '1200',
+        ogImageHeight: '630',
+        ogImageAlt: 'Điện máy Thế - Siêu thị điện tử tại Diễn Châu, Nghệ An',
+        ogImageType: 'image/jpeg',
         ogUrl: `${baseUrl}/trang-chu`,
         canonical: `${baseUrl}/trang-chu`,
       },
@@ -79,6 +88,16 @@ export class SeoService {
         ogImage: `${baseUrl}/images/og-image.jpg`,
         ogUrl: `${baseUrl}/lien-he`,
         canonical: `${baseUrl}/lien-he`,
+      },
+      notfound: {
+        title: '404 - Không Tìm Thấy Trang - Điện máy Thế',
+        description: 'Trang bạn đang tìm kiếm không tồn tại. Vui lòng quay lại trang chủ hoặc sử dụng menu điều hướng.',
+        keywords: '404, không tìm thấy, lỗi trang, điện máy Thế',
+        ogTitle: '404 - Không Tìm Thấy Trang - Điện máy Thế',
+        ogDescription: 'Trang bạn đang tìm kiếm không tồn tại',
+        ogImage: `${baseUrl}/images/og-image.jpg`,
+        ogUrl: `${baseUrl}/404`,
+        canonical: `${baseUrl}/404`,
       },
     };
 

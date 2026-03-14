@@ -3,9 +3,13 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from './app.module';
 import * as hbs from 'hbs';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Đăng ký exception filter cho NotFoundException
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   // Đăng ký helper cho JSON - sử dụng instance Handlebars từ hbs
   hbs.handlebars.registerHelper('json', function (context) {
