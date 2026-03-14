@@ -28,6 +28,9 @@
     <meta name="twitter:description" content="{{metaTags.ogDescription}}">
     <meta name="twitter:image" content="{{metaTags.ogImage}}">
     
+    {{! Facebook Domain Verification }}
+    <meta name="facebook-domain-verification" content="uxszymiunz2ol034f7gxba204xahi4" />
+    
     {{! Structured Data (JSON-LD) }}
     {{#if structuredData.organization}}
     <script type="application/ld+json">
@@ -140,6 +143,36 @@
         
         nav a.active {
             border-bottom: 2px solid white;
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            gap: 5px;
+            background: none;
+            border: none;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
         }
         
         main {
@@ -411,13 +444,49 @@
         
         @media (max-width: 768px) {
             header .container {
-                flex-direction: column;
-                text-align: center;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            nav {
+                display: none;
+                width: 100%;
+                margin-top: 1rem;
+            }
+            
+            nav.active {
+                display: block;
             }
             
             nav ul {
-                justify-content: center;
-                margin-top: 1rem;
+                flex-direction: column;
+                gap: 0;
+                width: 100%;
+            }
+            
+            nav ul li {
+                width: 100%;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            nav ul li:last-child {
+                border-bottom: none;
+            }
+            
+            nav a {
+                display: block;
+                padding: 1rem;
+                text-align: left;
+            }
+            
+            nav a.active {
+                border-bottom: none;
+                background: rgba(255, 255, 255, 0.1);
             }
             
             .fab-container {
@@ -442,7 +511,12 @@
                     <span class="logo-sub">Thiết bị điện tử</span>
                 </div>
             </div>
-            <nav>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav id="nav">
                 <ul>
                     <li><a href="/trang-chu" class="active">Trang chủ</a></li>
                     <li><a href="/gioi-thieu">Giới thiệu</a></li>
@@ -539,5 +613,38 @@
             </svg>
         </a>
     </div>
+    
+    <script>
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+        
+        if (hamburger && nav) {
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                nav.classList.toggle('active');
+            });
+            
+            // Close menu when clicking on a link
+            const navLinks = nav.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    nav.classList.remove('active');
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideNav = nav.contains(event.target);
+                const isClickOnHamburger = hamburger.contains(event.target);
+                
+                if (!isClickInsideNav && !isClickOnHamburger && nav.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    nav.classList.remove('active');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
